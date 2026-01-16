@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Define the character encoding and viewport for responsiveness -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Gratitude Journey - Mrs. Anakshi Wadhwa</title>
+    
+    <!-- Preconnect to Google Fonts for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- Load required elegant fonts: Playfair Display for titles, Inter for body, and Architects Daughter for signature -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Inter:wght@300;400;600&family=Architects+Daughter&display=swap" rel="stylesheet">
+    
+    <!-- Load Tailwind CSS for utility-first styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        /* Global CSS variables for the color palette and glow effects */
+        :root {
+            --primary: #2dd4bf; /* Vibrant turquoise/teal */
+            --secondary: #0a0a0a; /* Deep matte black */
+            --accent: #f8fafc; /* Soft off-white for text */
+            --glow: rgba(45, 212, 191, 0.6); /* Translucent teal for shadows */
+            --text-glow: 0 0 20px rgba(45, 212, 191, 0.8), 0 0 40px rgba(45, 212, 191, 0.4); /* Glowing text shadow effect */
+        }
+
+        /* Base body styling: black background, light text, and hidden scrollbars */
+        body {
+            background-color: var(--secondary);
+            color: var(--accent);
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+            margin: 0;
+            cursor: none; /* Custom cursor will be used instead */
+            overflow-y: auto;
+            height: 100vh;
+        }
+
+        /* Apply elegant serif font to headers */
+        h1, h2, h3, .serif {
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* Custom cursor: a larger ring that follows the mouse */
+        .cursor {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--primary);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.1s ease;
+            mix-blend-mode: difference;
+        }
+
+        /* Custom cursor: a small solid dot in the center of the ring */
+        .cursor-dot {
+            width: 4px;
+            height: 4px;
+            background-color: var(--primary);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        /* Styling for the full-screen sections */
+        .section {
+            display: none; /* Sections are hidden by default */
+            height: 100vh;
+            width: 100vw;
+            position: absolute;
+            top: 0;
+            left: 0;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            padding: 2rem;
+            text-align: center;
+            overflow-y: auto; /* Allow vertical scroll within the section if content overflows */
+            overflow-x: hidden;
+        }
+
+        /* Display the active section using flexbox */
+        .section.active {
+            display: flex;
+        }
+
+        /* Radial gradient background that creates a subtle depth effect */
+        .gradient-bg {
+            background: radial-gradient(circle at center, #0a2a2a 0%, #050505 100%);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+        }
+
+        /* Canvas for the floating background particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Glowing text class for high-impact titles */
+        .glow-title {
+            color: #fff;
+            text-shadow: var(--text-glow);
+            letter-spacing: -0.02em;
+        }
+
+        /* Subtitle styling with teal color and wide spacing */
+        .sub-title {
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 0.5em;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            opacity: 0.9;
+        }
+
+        /* Primary action button with border, hover scaling, and glow */
+        .btn-journey {
+            background: transparent;
+            border: 1px solid var(--primary);
+            padding: 1rem 2rem;
+            color: var(--primary);
+            border-radius: 9999px;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px transparent;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+        }
+
+        /* Button hover state: invert colors and increase glow */
+        .btn-journey:hover {
+            background: var(--primary);
+            color: var(--secondary);
+            box-shadow: 0 0 30px var(--glow);
+            transform: scale(1.05);
+        }
+
+        /* Flip card grid layout for "Tokens of Gratitude" */
+        .flip-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            width: 100%;
+            max-width: 1200px;
+            padding: 2rem;
+        }
+
+        /* Container for the 3D flip card effect */
+        .flip-card {
+            perspective: 1000px;
+            width: 100%;
+            height: 380px;
+        }
+
+        /* The inner part of the card that actually rotates */
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+            cursor: pointer;
+        }
+
+        /* Apply the flip rotation when the .flipped class is present */
+        .flip-card.flipped .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        /* Styling for both faces of the flip card */
+        .flip-card-front, .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            border-radius: 1.5rem;
+            border: 1px solid rgba(45, 212, 191, 0.15);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+        }
+
+        /* Front face: dark background with teal text */
+        .flip-card-front {
+            background: rgba(15, 15, 15, 0.95);
+            color: var(--primary);
+        }
+
+        /* Back face: teal background with dark text, rotated initially */
+        .flip-card-back {
+            background: var(--primary);
+            color: var(--secondary);
+            transform: rotateY(180deg);
+        }
+
+        /* Container for the achievement timeline */
+        .timeline-container {
+            max-width: 900px;
+            width: 100%;
+            margin: 0 auto;
+            position: relative;
+            padding: 4rem 0;
+        }
+
+        /* Vertical line through the timeline nodes */
+        .timeline-v-line {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, transparent, rgba(45, 212, 191, 0.3), transparent);
+            transform: translateX(-50%);
+        }
+
+        /* Individual timeline items with reveal animation properties */
+        .timeline-item {
+            margin-bottom: 4rem;
+            position: relative;
+            width: 100%;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        /* Display state for timeline items once revealed */
+        .timeline-item.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Content box for each timeline event */
+        .timeline-content {
+            width: 42%;
+            padding: 2.5rem;
+            background: rgba(255,255,255,0.02);
+            border-radius: 1.5rem;
+            border: 1px solid rgba(45, 212, 191, 0.1);
+            text-align: left;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+        }
+
+        /* Alternate timeline content boxes to the right for even items */
+        .timeline-item:nth-child(even) .timeline-content {
+            margin-left: auto;
+        }
+
+        /* Glowing dot marking each point on the timeline */
+        .timeline-dot {
+            position: absolute;
+            left: 50%;
+            top: 30px;
+            width: 20px;
+            height: 20px;
+            background: var(--primary);
+            border-radius: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 0 20px var(--primary);
+            z-index: 1;
+            border: 4px solid var(--secondary);
+        }
+
+        /* Fixed ribbon at the bottom of the screen */
+        .ribbon {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 1rem;
+            text-align: center;
+            font-size: 0.75rem;
+            letter-spacing: 0.6em;
+            color: var(--primary);
+            border-top: 1px solid rgba(45, 212, 191, 0.4);
+            z-index: 1000;
+            text-shadow: 0 0 12px var(--primary);
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        /* Carousel container for achievement summaries */
+        .carousel-container {
+            width: 100%;
+            max-width: 900px;
+            overflow: hidden;
+            position: relative;
+            padding: 2rem;
+        }
+
+        /* The horizontal track that slides inside the carousel */
+        .carousel-track {
+            display: flex;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Individual carousel slides */
+        .carousel-item {
+            min-width: 100%;
+            padding: 4rem;
+            background: rgba(255,255,255,0.01);
+            border-radius: 3rem;
+            border: 1px solid rgba(45, 212, 191, 0.08);
+            backdrop-filter: blur(8px);
+        }
+
+        /* Styling for the interactive gift box */
+        .gift-box {
+            font-size: 9rem;
+            cursor: pointer;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            filter: drop-shadow(0 0 40px rgba(45, 212, 191, 0.5));
+        }
+
+        /* Scaling and rotation effect on hover */
+        .gift-box:hover {
+            transform: scale(1.2) rotate(12deg);
+        }
+
+        /* Styling for the gratitude counter squares */
+        .counter-block {
+            background: rgba(255, 255, 255, 0.015);
+            padding: 3rem;
+            border-radius: 2rem;
+            border: 1px solid rgba(45, 212, 191, 0.12);
+            min-width: 180px;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.5);
+        }
+
+        /* Blinking cursor for typewriter animations */
+        .typewriter-text::after {
+            content: '|';
+            animation: blink 0.7s infinite;
+        }
+
+        /* Animation keyframes for the blinking cursor */
+        @keyframes blink {
+            from, to { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* Navigation buttons that appear after sections are finished */
+        .next-section-btn {
+            margin-top: 4rem;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 1.2s ease;
+            transform: translateY(20px);
+        }
+
+        /* Make navigation button visible */
+        .next-section-btn.visible {
+            opacity: 1;
+            pointer-events: all;
+            transform: translateY(0);
+        }
+
+        /* Base class for text that fades and slides up on entry */
+        .reveal-text {
+            opacity: 0;
+            transform: translateY(25px);
+            transition: all 1s ease;
+        }
+
+        /* Reveal state for text elements */
+        .reveal-text.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Minimal scrollbar for scrollable content areas */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.03);
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 10px;
+        }
+
+        /* Acronym list item layout for the "Meaning of You" section */
+        .acronym-row {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        /* Styling for the large letters in the acronym */
+        .acronym-letter {
+            font-size: 5rem;
+            font-weight: 800;
+            color: var(--primary);
+            text-shadow: 0 0 20px rgba(45, 212, 191, 0.4);
+            font-family: 'Playfair Display', serif;
+            min-width: 80px;
+            text-align: center;
+        }
+
+        /* Descriptive text next to the acronym letters */
+        .acronym-meaning {
+            font-size: 1.8rem;
+            font-style: italic;
+            font-weight: 300;
+            color: var(--accent);
+            opacity: 0.8;
+            letter-spacing: 0.05em;
+        }
+
+        /* Cards displayed in the achievement carousel */
+        .achievement-card {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(45, 212, 191, 0.1);
+            padding: 3rem;
+            border-radius: 2rem;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        /* Card hover animation with background shift and lift */
+        .achievement-card:hover {
+            border-color: var(--primary);
+            background: rgba(45, 212, 191, 0.08);
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+    </style>
+</head>
+<body>
+    <!-- Custom Cursor elements -->
+    <div class="cursor"></div>
+    <div class="cursor-dot"></div>
+    
+    <!-- Permanent background effects -->
+    <div class="gradient-bg"></div>
+    <canvas class="particles" id="particleCanvas"></canvas>
+
+    <!-- Fixed ribbon at the bottom -->
+    <div class="ribbon">MADE WITH LOVE BY FIONA</div>
+
+    <!-- Section 1: Landing Page -->
+    <section class="section active" id="sec-1">
+        <div class="max-w-4xl">
+            <p class="sub-title">A TRIBUTE TO</p>
+            <h1 class="text-7xl md:text-9xl mb-6 glow-title serif">Mrs. Anakshi Wadhwa</h1>
+            <p class="text-lg md:text-xl font-light mb-12 tracking-[0.6em] opacity-60">THE GRATITUDE JOURNEY</p>
+            <button class="btn-journey" onclick="nextSection()">START THE JOURNEY</button>
+        </div>
+    </section>
+
+    <!-- Section 2: Emotional Opening -->
+    <section class="section" id="sec-2">
+        <div class="max-w-3xl text-3xl md:text-5xl font-light leading-relaxed">
+            <p class="mb-10 reveal-text">This page exists because of one teacher.</p>
+            <p class="mb-10 reveal-text">A teacher who didn’t just teach coding…</p>
+            <p class="reveal-text glow-title text-4xl md:text-6xl">She created opportunities.</p>
+            <div class="next-section-btn">
+                <button class="btn-journey" onclick="nextSection()">CONTINUE JOURNEY</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 3: Achievements Timeline -->
+    <section class="section" id="sec-3">
+        <h2 class="text-5xl mb-6 glow-title serif">Our Journey Together</h2>
+        <p class="text-xl italic mb-12 serif opacity-80 reveal-text">“It all started with the support of the one teacher, that's you!”</p>
+        
+        <div class="timeline-container overflow-y-auto custom-scrollbar pr-6">
+            <div class="timeline-v-line"></div>
+            
+            <!-- Timeline Item 1 -->
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <h4 class="text-teal-400 text-xs tracking-widest uppercase mb-3 font-bold">Learning</h4>
+                    <h3 class="text-2xl font-bold mb-3 serif">Learning & Building</h3>
+                    <p class="text-base opacity-70 leading-relaxed">MIT App Inventor, Thunkable, Scratch, script coding— transforming curiosity into creation.</p>
+                </div>
+            </div>
+
+            <!-- Timeline Item 2 -->
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <h4 class="text-teal-400 text-xs tracking-widest uppercase mb-3 font-bold">Milestone</h4>
+                    <h3 class="text-2xl font-bold mb-3 serif">Intellovation</h3>
+                    <p class="text-base opacity-70 leading-relaxed">Our first big step. Under her guidance, we entered our first competition—exploring health and well-being. This is where it all began.</p>
+                </div>
+            </div>
+
+            <!-- Timeline Item 3 -->
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <h4 class="text-teal-400 text-xs tracking-widest uppercase mb-3 font-bold">Project</h4>
+                    <h3 class="text-2xl font-bold mb-3 serif">Healthara App</h3>
+                    <p class="text-base opacity-70 leading-relaxed">Our first complete app. A milestone that proved we could build real-world solutions.</p>
+                </div>
+            </div>
+
+            <!-- Timeline Item 4 -->
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <h4 class="text-teal-400 text-xs tracking-widest uppercase mb-3 font-bold">Competition</h4>
+                    <h3 class="text-2xl font-bold mb-3 serif">Greenovation</h3>
+                    <p class="text-base opacity-70 leading-relaxed">Secured 3rd Prize at Laurel High School. Confidence unlocked through your belief in us.</p>
+                </div>
+            </div>
+
+            <!-- Timeline Item 5 -->
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <h4 class="text-teal-400 text-xs tracking-widest uppercase mb-3 font-bold">National</h4>
+                    <h3 class="text-2xl font-bold mb-3 serif">Skill Innovation</h3>
+                    <p class="text-base opacity-70 leading-relaxed">National Level competition. She believed in us. She chose us. Another door opened under her guidance.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="next-section-btn">
+            <button class="btn-journey" onclick="nextSection()">TOKENS OF GRATITUDE</button>
+        </div>
+    </section>
+
+    <!-- Section 4: 3D Flip Cards (Personal Gratitude) -->
+    <section class="section" id="sec-4">
+        <h2 class="text-5xl mb-6 glow-title serif">Tokens of Gratitude</h2>
+        <p class="text-xs tracking-[0.8em] opacity-50 mb-14 uppercase font-bold">Tap a card to reveal a message</p>
+        <div class="flip-grid overflow-y-auto custom-scrollbar pr-4 max-h-[70vh]">
+            <!-- Each card follows the same structure: front with icon/title, back with message -->
+            <div class="flip-card" onclick="toggleFlip(this)">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front text-2xl serif flex flex-col items-center gap-6">
+                        <svg class="w-14 h-14 text-teal-400 filter drop-shadow-[0_0_10px_rgba(45,212,191,0.5)]" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                        <span class="tracking-wide">For believing in us</span>
+                    </div>
+                    <div class="flip-card-back text-xl leading-relaxed">When we doubted ourselves, you saw potential we didn't know we had.</div>
+                </div>
+            </div>
+            <div class="flip-card" onclick="toggleFlip(this)">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front text-2xl serif flex flex-col items-center gap-6">
+                        <svg class="w-14 h-14 text-teal-400 filter drop-shadow-[0_0_10px_rgba(45,212,191,0.5)]" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                        <span class="tracking-wide">For opportunities</span>
+                    </div>
+                    <div class="flip-card-back text-xl leading-relaxed">You opened doors to worlds we never knew existed. Every competition was a lesson.</div>
+                </div>
+            </div>
+            <div class="flip-card" onclick="toggleFlip(this)">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front text-2xl serif flex flex-col items-center gap-6">
+                        <svg class="w-14 h-14 text-teal-400 filter drop-shadow-[0_0_10px_rgba(45,212,191,0.5)]" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                        <span class="tracking-wide">For the patience</span>
+                    </div>
+                    <div class="flip-card-back text-xl leading-relaxed">Thank you for guiding us through every error, every bug, and every 'it's not working'.</div>
+                </div>
+            </div>
+            <div class="flip-card" onclick="toggleFlip(this)">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front text-2xl serif flex flex-col items-center gap-6">
+                        <svg class="w-14 h-14 text-teal-400 filter drop-shadow-[0_0_10px_rgba(45,212,191,0.5)]" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                        <span class="tracking-wide">For the mentorship</span>
+                    </div>
+                    <div class="flip-card-back text-xl leading-relaxed">You taught us not just how to code, but how to think, innovate, and lead with kindness.</div>
+                </div>
+            </div>
+            <div class="flip-card" onclick="toggleFlip(this)">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front text-2xl serif flex flex-col items-center gap-6">
+                        <svg class="w-14 h-14 text-teal-400 filter drop-shadow-[0_0_10px_rgba(45,212,191,0.5)]" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                        <span class="tracking-wide">For trusting us</span>
+                    </div>
+                    <div class="flip-card-back text-xl leading-relaxed">Your trust was the fuel that kept our journey moving even during the hardest times.</div>
+                </div>
+            </div>
+            <div class="flip-card" onclick="toggleFlip(this)">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front text-2xl serif flex flex-col items-center gap-6">
+                        <svg class="w-14 h-14 text-teal-400 filter drop-shadow-[0_0_10px_rgba(45,212,191,0.5)]" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                        <span class="tracking-wide">For every milestone</span>
+                    </div>
+                    <div class="flip-card-back text-xl leading-relaxed">Every win was yours as much as ours. Thank you for being the wind beneath our wings.</div>
+                </div>
+            </div>
+        </div>
+        <div class="next-section-btn">
+            <button class="btn-journey" onclick="nextSection()">A SPECIAL LETTER</button>
+        </div>
+    </section>
+
+    <!-- Section 5: Heartfelt Letter (Typewriter) -->
+    <section class="section" id="sec-5">
+        <div class="max-w-4xl text-2xl md:text-3xl leading-relaxed serif p-12 bg-zinc-900/50 rounded-3xl border border-teal-900/40 backdrop-blur-xl shadow-[0_30px_60px_rgba(0,0,0,0.6)]">
+            <div id="typewriter" class="typewriter-text text-left"></div>
+        </div>
+        <div class="next-section-btn">
+            <button class="btn-journey" onclick="nextSection()">TIMELINE OF IMPACT</button>
+        </div>
+    </section>
+
+    <!-- Section 6: Future Vision (Short Timeline) -->
+    <section class="section" id="sec-6">
+        <h2 class="text-5xl mb-16 glow-title serif">Timeline of Impact</h2>
+        <div class="timeline-container max-w-lg">
+            <div class="timeline-v-line"></div>
+            
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <h4 class="text-teal-400 text-xs tracking-widest uppercase mb-3">Past</h4>
+                    <p class="text-2xl serif italic opacity-90">“She chose us with confidence.”</p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <h4 class="text-teal-400 text-xs tracking-widest uppercase mb-3">Present</h4>
+                    <p class="text-2xl serif italic opacity-90">“Now, we walk with confidence.”</p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <h4 class="text-teal-400 text-xs tracking-widest uppercase mb-3">Future</h4>
+                    <p class="text-2xl serif italic opacity-90">“Her lessons walk with us forever.”</p>
+                </div>
+            </div>
+        </div>
+        <div class="next-section-btn">
+            <button class="btn-journey" onclick="nextSection()">A SPECIAL TOKEN</button>
+        </div>
+    </section>
+
+    <!-- Section 7: Easter Egg Reveal -->
+    <section class="section" id="sec-7">
+        <h2 class="text-4xl mb-16 glow-title serif reveal-text">A small token of appreciation...</h2>
+        <div class="gift-box" id="giftBox" onclick="openGift()">🎁</div>
+        <p class="mt-10 text-teal-400 animate-pulse tracking-[1em] font-bold text-sm">TAP TO OPEN</p>
+        <div id="giftMessage" class="hidden mt-12 text-3xl font-serif text-white max-w-4xl leading-relaxed px-4">
+            <div class="bg-zinc-900/60 p-12 rounded-3xl border border-teal-500/30 backdrop-blur-md">
+                "A teacher affects eternity; she can never tell where her influence stops." 
+                <br><br>
+                <span class="glow-title text-4xl md:text-5xl font-bold italic">— You are that eternity for us, Mam.</span>
+            </div>
+        </div>
+        <div class="next-section-btn">
+            <button class="btn-journey" onclick="nextSection()">THE SUPPORT SYSTEM</button>
+        </div>
+    </section>
+
+    <!-- Section 8: Support System Infographic -->
+    <section class="section" id="sec-8">
+        <h2 class="text-5xl mb-24 glow-title serif">Our Support System</h2>
+        <div class="flex flex-wrap gap-20 items-center justify-center p-8">
+            <div class="flex flex-col items-center gap-8 group">
+                <div class="w-36 h-36 rounded-full border-2 border-teal-500/10 flex items-center justify-center bg-teal-500/5 group-hover:bg-teal-500/20 group-hover:scale-110 group-hover:border-teal-400 transition-all cursor-help overflow-hidden" title="Student">
+                    <img src="Fiona img 1.png" alt="Fiona" class="w-full h-full object-cover">
+                </div>
+                <span class="text-xs opacity-50 uppercase tracking-[0.5em] font-bold">Student</span>
+            </div>
+            <div class="flex flex-col items-center gap-8 group">
+                <div class="w-64 h-64 rounded-full border-4 border-teal-400 flex items-center justify-center bg-teal-400/10 shadow-[0_0_80px_rgba(45,212,191,0.3)] group-hover:scale-110 group-hover:shadow-[0_0_100px_rgba(45,212,191,0.5)] transition-all cursor-help overflow-hidden" title="Our Mentor">
+                    <img src="mam.png" alt="Anakshi Mam" class="w-full h-full object-cover">
+                </div>
+                <span class="text-2xl text-teal-400 uppercase tracking-[0.6em] font-black glow-title">The Mentor</span>
+            </div>
+            <div class="flex flex-col items-center gap-8 group">
+                <div class="w-36 h-36 rounded-full border-2 border-teal-500/10 flex items-center justify-center bg-teal-500/5 group-hover:bg-teal-500/20 group-hover:scale-110 group-hover:border-teal-400 transition-all cursor-help overflow-hidden" title="Support">
+                    <img src="mam (1).png" alt="Deepti Mam" class="w-full h-full object-cover">
+                </div>
+                <span class="text-xs opacity-50 uppercase tracking-[0.5em] font-bold">Supporter</span>
+            </div>
+        </div>
+        <div class="next-section-btn">
+            <button class="btn-journey" onclick="nextSection()">GRATEFUL EVERY SECOND</button>
+        </div>
+    </section>
+
+    <!-- Section 9: Gratitude Counter -->
+    <section class="section" id="sec-9">
+        <h2 class="text-5xl mb-20 glow-title serif">Grateful Every Second</h2>
+        <div class="flex flex-wrap gap-14 justify-center">
+            <div class="counter-block">
+                <div class="text-7xl font-bold text-teal-400 mb-4 glow-title">9.5</div>
+                <div class="text-xs tracking-[0.6em] opacity-40 uppercase font-black">Months</div>
+            </div>
+            <div class="counter-block">
+                <div class="text-7xl font-bold text-teal-400 mb-4 glow-title">290+</div>
+                <div class="text-xs tracking-[0.6em] opacity-40 uppercase font-black">Days</div>
+            </div>
+            <div class="counter-block">
+                <div class="text-7xl font-bold text-teal-400 mb-4 glow-title" id="secondsCounter">0</div>
+                <div class="text-xs tracking-[0.6em] opacity-40 uppercase font-black">Seconds</div>
+            </div>
+        </div>
+        <div class="next-section-btn">
+            <button class="btn-journey" onclick="nextSection()">ACHIEVEMENT REEL</button>
+        </div>
+    </section>
+
+    <!-- Section 10: Dynamic Achievement Reel (Carousel) -->
+    <section class="section" id="sec-10">
+        <h2 class="text-5xl mb-16 glow-title serif">The Achievement Reel</h2>
+        <div class="carousel-container">
+            <div class="carousel-track" id="carouselTrack">
+                <div class="carousel-item">
+                    <div class="achievement-card">
+                        <h3 class="text-4xl text-teal-400 mb-8 serif glow-title">Namaste AI Victories</h3>
+                        <p class="text-xl font-light leading-relaxed opacity-80">Bal Bharati, Ramjas International, and ML Khanna DAV. Success fueled by your mentorship and constant encouragement.</p>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="achievement-card">
+                        <h3 class="text-4xl text-teal-400 mb-8 serif glow-title">National Telecast</h3>
+                        <p class="text-xl font-light leading-relaxed opacity-80">DD National News Telecast. A milestone moment recognized by the nation, made possible because you chose us.</p>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="achievement-card">
+                        <h3 class="text-4xl text-teal-400 mb-8 serif glow-title">Saturnalia Success</h3>
+                        <p class="text-xl font-light leading-relaxed opacity-80">St. Margaret’s School - First Prize. Representing our school with pride and winning under your expert guidance.</p>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="achievement-card">
+                        <h3 class="text-4xl text-teal-400 mb-8 serif glow-title">Youth Ideathon 2025</h3>
+                        <p class="text-xl font-light leading-relaxed opacity-80">Reaching the Top 125 teams and being among the Top 2000 students nationwide. A true journey of growth.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Manual carousel navigation buttons -->
+        <div class="flex gap-10 mt-16">
+            <button class="btn-journey !p-6 !rounded-full" onclick="rotateCarousel(-1)">←</button>
+            <button class="btn-journey !p-6 !rounded-full" onclick="rotateCarousel(1)">→</button>
+        </div>
+        <div class="next-section-btn">
+            <button class="btn-journey" onclick="nextSection()">THE MEANING OF YOU</button>
+        </div>
+    </section>
+
+    <!-- Section 11: Name Meaning Acrostic -->
+    <section class="section" id="sec-11">
+        <h2 class="text-3xl mb-20 serif text-teal-400 tracking-[0.3em] uppercase opacity-80">The Meaning of You</h2>
+        <div class="flex flex-col gap-2 text-left max-w-2xl w-full">
+            <!-- Each letter of ANAKSHI with its corresponding tribute -->
+            <div class="acronym-row acronym-reveal opacity-0">
+                <span class="acronym-letter">A</span> 
+                <span class="acronym-meaning">Always Inspiring</span>
+            </div>
+            <div class="acronym-row acronym-reveal opacity-0">
+                <span class="acronym-letter">N</span> 
+                <span class="acronym-meaning">Nurturing Potential</span>
+            </div>
+            <div class="acronym-row acronym-reveal opacity-0">
+                <span class="acronym-letter">A</span> 
+                <span class="acronym-meaning">Ambitious Vision</span>
+            </div>
+            <div class="acronym-row acronym-reveal opacity-0">
+                <span class="acronym-letter">K</span> 
+                <span class="acronym-meaning">Kind Leadership</span>
+            </div>
+            <div class="acronym-row acronym-reveal opacity-0">
+                <span class="acronym-letter">S</span> 
+                <span class="acronym-meaning">Strength & Support</span>
+            </div>
+            <div class="acronym-row acronym-reveal opacity-0">
+                <span class="acronym-letter">H</span> 
+                <span class="acronym-meaning">Hope Builder</span>
+            </div>
+            <div class="acronym-row acronym-reveal opacity-0">
+                <span class="acronym-letter">I</span> 
+                <span class="acronym-meaning">Infinite Impact</span>
+            </div>
+        </div>
+        <div class="next-section-btn">
+            <button class="btn-journey" onclick="nextSection()">FINAL MESSAGE</button>
+        </div>
+    </section>
+
+    <!-- Section 12: Final Farewell & Signature -->
+    <section class="section" id="sec-12">
+        <div class="text-center">
+            <h2 class="text-8xl md:text-9xl font-bold tracking-tighter text-white mb-16 reveal-text glow-title">THANK YOU.</h2>
+            <p class="text-3xl mb-12 font-light italic reveal-text opacity-60">With deepest gratitude,</p>
+            <p class="text-6xl mb-16 serif text-teal-400 reveal-text font-black glow-title">Your student Fiona</p>
+            <p class="text-4xl mb-20 opacity-30 reveal-text italic" style="font-family: 'Architects Daughter', cursive;">गुरुर्ब्रह्मा गुरुरेव महेश्वरः</p>
+            <div class="reveal-text">
+                <button class="btn-journey" onclick="goToSection(1)">RESTART JOURNEY</button>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        /**
+         * Custom Cursor Logic
+         * Follows the mouse with two separate elements: a ring and a dot.
+         */
+        const cursor = document.querySelector('.cursor');
+        const cursorDot = document.querySelector('.cursor-dot');
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX - 10 + 'px';
+            cursor.style.top = e.clientY - 10 + 'px';
+            cursorDot.style.left = e.clientX - 2 + 'px';
+            cursorDot.style.top = e.clientY - 2 + 'px';
+        });
+
+        /**
+         * Hover Effects for Interactive Elements
+         * Scaled up the cursor ring and changes border color on hover.
+         */
+        document.querySelectorAll('button, .flip-card, .gift-box').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursor.style.transform = 'scale(3)';
+                cursor.style.borderColor = '#fff';
+            });
+            el.addEventListener('mouseleave', () => {
+                cursor.style.transform = 'scale(1)';
+                cursor.style.borderColor = 'var(--primary)';
+            });
+        });
+
+        // Current navigation state tracking
+        let currentSection = 1;
+        const totalSections = 12;
+
+        /**
+         * Core Navigation Function
+         * Switches the active section and triggers its internal entry animations.
+         * @param {number} num - The section number to navigate to.
+         */
+        function goToSection(num) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            // Display only the target section
+            const targetSec = document.getElementById(`sec-${num}`);
+            targetSec.classList.add('active');
+            currentSection = num;
+            // Run entry logic for the new section
+            onSectionEntry(num);
+        }
+
+        /**
+         * Simple wrapper to move to the next section sequentially.
+         */
+        function nextSection() {
+            if (currentSection < totalSections) goToSection(currentSection + 1);
+        }
+
+        /**
+         * Section Entry Animation Controller
+         * Handles specific animations for each section as it appears.
+         * @param {number} num - The current active section number.
+         */
+        function onSectionEntry(num) {
+            const currentEl = document.getElementById(`sec-${num}`);
+            
+            // Trigger automatic reveals for text elements tagged with .reveal-text
+            currentEl.querySelectorAll('.reveal-text').forEach((el, i) => {
+                setTimeout(() => el.classList.add('show'), i * 800);
+            });
+
+            // Handle specific triggers for each section
+            if (num === 2) {
+                // Show the "Continue" button after a short delay
+                setTimeout(() => showNextBtn(num), 3000);
+            }
+            if (num === 3) {
+                // Staggered reveal of timeline items
+                const items = currentEl.querySelectorAll('.timeline-item');
+                items.forEach((it, i) => {
+                    setTimeout(() => it.classList.add('show'), i * 1000);
+                });
+                // Button appears after the last item is revealed
+                setTimeout(() => showNextBtn(num), items.length * 1000 + 500);
+            }
+            if (num === 4) {
+                setTimeout(() => showNextBtn(num), 2000);
+            }
+            if (num === 5) {
+                // Start the typewriter effect for the personal letter
+                startTypewriter();
+                // Long delay to allow reading before showing the button
+                setTimeout(() => showNextBtn(num), 12000);
+            }
+            if (num === 6) {
+                // Staggered reveal of the summary timeline
+                const items = currentEl.querySelectorAll('.timeline-item');
+                items.forEach((it, i) => {
+                    setTimeout(() => it.classList.add('show'), i * 800);
+                });
+                setTimeout(() => showNextBtn(num), 3000);
+            }
+            if (num === 8 || num === 9 || num === 10) {
+                setTimeout(() => showNextBtn(num), 2000);
+            }
+            if (num === 11) {
+                // Sequential reveal of acronym rows
+                const acronymRows = currentEl.querySelectorAll('.acronym-reveal');
+                acronymRows.forEach((row, i) => {
+                    setTimeout(() => {
+                        row.classList.add('show');
+                        row.style.opacity = 1;
+                        row.style.transform = 'translateY(0)';
+                    }, i * 600);
+                });
+                setTimeout(() => showNextBtn(num), 4500);
+            }
+        }
+
+        /**
+         * Helper to make a section's navigation button visible.
+         */
+        function showNextBtn(num) {
+            const btn = document.querySelector(`#sec-${num} .next-section-btn`);
+            if (btn) btn.classList.add('visible');
+        }
+
+        /**
+         * Typewriter Animation Logic
+         * Progressively adds characters from the string to the DOM.
+         */
+        const typeText = `Dear Anakshi Ma’am,\n\nYou were never just our coding teacher.\nYou were our mentor,\nour guide,\nand the reason we dared to step forward.\n\nFrom our first competition\nto every milestone after,\nyou stood by us with patience and belief.\n\nThank you for trusting us,\npushing us,\nand helping us grow beyond classrooms.`;
+        function startTypewriter() {
+            const el = document.getElementById('typewriter');
+            el.innerHTML = '';
+            let i = 0;
+            const timer = setInterval(() => {
+                if (i < typeText.length) {
+                    // Handle newlines as <br> tags
+                    el.innerHTML += typeText.charAt(i) === '\n' ? '<br>' : typeText.charAt(i);
+                    i++;
+                } else {
+                    clearInterval(timer);
+                }
+            }, 50); // Speed of 50ms per character
+        }
+
+        /**
+         * Carousel Navigation Logic
+         * Shifts the track based on the current index.
+         */
+        let carouselIdx = 0;
+        function rotateCarousel(dir) {
+            const track = document.getElementById('carouselTrack');
+            const items = document.querySelectorAll('.carousel-item');
+            // Circular navigation index calculation
+            carouselIdx = (carouselIdx + dir + items.length) % items.length;
+            // Shift the track horizontally
+            track.style.transform = `translateX(-${carouselIdx * 100}%)`;
+        }
+
+        /**
+         * Flip Card State Handler
+         * Toggles the .flipped class on click.
+         */
+        function toggleFlip(card) {
+            card.classList.toggle('flipped');
+        }
+
+        /**
+         * Gift Box Reveal Sequence
+         * Triggers a brief sparkle animation before hiding the box and showing the message.
+         */
+        function openGift() {
+            const box = document.getElementById('giftBox');
+            box.innerHTML = '✨🎁✨'; // Add sparkle text
+            setTimeout(() => {
+                box.style.display = 'none';
+                document.getElementById('giftMessage').classList.remove('hidden');
+                // Trigger celebratory confetti
+                createConfetti();
+                // Show the next navigation button
+                showNextBtn(7);
+            }, 600);
+        }
+
+        /**
+         * Confetti Animation Factory
+         * Creates individual confetti particles and animates them falling.
+         */
+        function createConfetti() {
+            for (let i = 0; i < 100; i++) {
+                const c = document.createElement('div');
+                c.style.position = 'fixed';
+                c.style.width = '10px';
+                c.style.height = '10px';
+                // Randomize colors for a diverse look
+                c.style.backgroundColor = `hsl(${Math.random() * 360}, 80%, 60%)`;
+                c.style.left = Math.random() * 100 + 'vw';
+                c.style.top = '-20px'; // Start above screen
+                c.style.zIndex = '999';
+                c.style.borderRadius = '50%';
+                c.style.pointerEvents = 'none';
+                document.body.appendChild(c);
+                
+                // Animate each particle with unique rotation and fall duration
+                const anim = c.animate([
+                    { transform: 'translateY(0) rotate(0deg) scale(1)', opacity: 1 },
+                    { transform: `translateY(110vh) rotate(${Math.random() * 720}deg) scale(0.5)`, opacity: 0 }
+                ], { duration: 3000 + Math.random() * 3000, easing: 'cubic-bezier(0.1, 0.7, 1.0, 0.1)' });
+                
+                // Remove from DOM once animation finishes
+                anim.onfinish = () => c.remove();
+            }
+        }
+
+        /**
+         * Simple Gratitude Seconds Counter
+         * Increments every second.
+         */
+        let seconds = 0;
+        setInterval(() => {
+            seconds++;
+            const counter = document.getElementById('secondsCounter');
+            if (counter) counter.innerText = seconds;
+        }, 1000);
+
+        /**
+         * Background Particle System
+         * Renders floating teal dots on a canvas for atmospheric effect.
+         */
+        const canvas = document.getElementById('particleCanvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        class Particle {
+            constructor() {
+                this.init();
+            }
+            /**
+             * Initialize or reset a particle with random position, speed, and opacity.
+             */
+            init() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 3 + 1;
+                this.vx = Math.random() * 0.4 - 0.2; // Slow horizontal drift
+                this.vy = Math.random() * 0.4 - 0.2; // Slow vertical drift
+                this.op = Math.random() * 0.5 + 0.1; // Slight transparency
+            }
+            /**
+             * Move the particle and reset if it drifts off-screen.
+             */
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                if (this.x > canvas.width || this.x < 0 || this.y > canvas.height || this.y < 0) this.init();
+            }
+            /**
+             * Draw the particle on the canvas.
+             */
+            draw() {
+                ctx.fillStyle = `rgba(45, 212, 191, ${this.op})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        // Initialize particle array
+        const particles = [];
+        for (let i = 0; i < 200; i++) particles.push(new Particle());
+
+        /**
+         * Main Animation Loop
+         * Clears canvas and updates/draws all particles.
+         */
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animate);
+        }
+        animate();
+
+        // Ensure canvas stays full-screen on window resize
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
+        // Start the journey with the landing section entry animations
+        onSectionEntry(1);
+    </script>
+</body>
+</html>
